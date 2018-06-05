@@ -3,29 +3,40 @@
 % 05-06-2018
 
 %% Import data
-all_pt = xlsread();
-[data] = importdata(); 
-t_data = data(:,1);
-y_data = data(:,2);
+data = table2struct(readtable(<%PATIENTDATA>.txt));
 
-%% AUC
-auc = trapz(t_data,y_data(:));
-%nog specificeren tot wanneer bij y()
+for i=1:1:length(data.ptnr)
+  %% Import TDC
+  tdc = importdata(data.tdc(i)); 
+  t_tdc = tdc(:,1);
+  y_tdc = tdc(:,2);
 
-%% AT
-d_data = diff(data);
-i_d_data = find(d_data>1); %cut-off speficiceren
-at = i_d_data(1);
+  %% AUC
+  auc = trapz(t_tdc,y_tdc(:));
+  data(i).auc = auc; 
+  %nog specificeren tot wanneer bij y()
 
-%% MTT
+  %% AT
+  d_tdc = diff(tdc);
+  i_d_tdc = find(d_tdc>1); %cut-off speficiceren
+  at = i_d_tdc(1);
+  data(i).at = at;
 
+  %% MTT
+  mtt = ;
+  data(i).mtt = mtt;
 
-%% PD
-pd = max(y_data);
+  %% PD
+  pd = max(y_tdc);
+  data(i).pd = pd;
 
-%% TTP
-i_pd = find(y_data==pd);
-ttp = t_data(i_pd);
+  %% TTP
+  i_pd = find(y_tdc==pd);
+  ttp = t_tdc(i_pd);
+  data(i).ttp = ttp;
+end
 
 %% Export data
-fprintf
+data_cell = struct2cell(data);
+xlswrite('data_parameters.xlsx',data_cell)
+
