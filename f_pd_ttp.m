@@ -1,4 +1,4 @@
-function [pd, ttp] = f_pdttp(tdc)
+function [pd, ttp] = f_pd_ttp(tdc)
   y_tdc = tdc(:,2);
   pd = max(y_tdc);
   i_pd = find(y_tdc==pd);
