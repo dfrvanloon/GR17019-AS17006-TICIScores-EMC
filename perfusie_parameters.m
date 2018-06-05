@@ -5,35 +5,39 @@
 %% Import data
 data = table2struct(readtable(<%PATIENTDATA>.txt));
 
-for i=1:1:length(data.ptnr)
-  %% Import TDC
-  tdc = importdata(data.tdc(i)); 
+%% Bepalen parameters
+for i=1:1:length(data.Patientnummer)
+  % Import TDC
+  addpath(data(i).PadTDC);
+  tdc = importdata(data(i).TDC);
   t_tdc = tdc(:,1);
   y_tdc = tdc(:,2);
+  
+  % Normalisatie TDC
 
-  %% AUC
+  % AUC
   auc = trapz(t_tdc,y_tdc(:));
-  data(i).auc = auc; 
+  data(i).AUC = auc; 
   %nog specificeren tot wanneer bij y()
 
-  %% AT
+  % AT
   d_tdc = diff(tdc);
   i_d_tdc = find(d_tdc>1); %cut-off speficiceren
   at = i_d_tdc(1);
-  data(i).at = at;
+  data(i).AT = at;
 
-  %% MTT
+  % MTT
   mtt = ;
-  data(i).mtt = mtt;
+  data(i).MTT = mtt;
 
-  %% PD
+  % PD
   pd = max(y_tdc);
-  data(i).pd = pd;
+  data(i).PD = pd;
 
-  %% TTP
+  % TTP
   i_pd = find(y_tdc==pd);
   ttp = t_tdc(i_pd);
-  data(i).ttp = ttp;
+  data(i).TTP = ttp;
 end
 
 %% Export data
