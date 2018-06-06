@@ -20,7 +20,7 @@ for i=1:1:length(data.Patientnummer)
   FCu = fft(y_Cu);
   FCa = fft(y_Ca);
   ht = ifft(FCu/FCa);
-  R = 1 - trapz(ht,0,t_tdc);
+  R = 1 - trapz(ht,0,t_Ca);
 
   % Normalisatie TDC
 
