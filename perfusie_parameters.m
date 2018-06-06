@@ -20,7 +20,7 @@ for i=1:1:length(data.Patientnummer)
   FCu = fft(y_Cu);
   FCa = fft(y_Ca);
   ht = ifft(FCu/FCa);
-  R = 1 - trapz(ht,0,t_Ca);
+  R = 1 - trapz(t_Ca,ht);
 
   % Normalisatie TDC
 
@@ -28,21 +28,21 @@ for i=1:1:length(data.Patientnummer)
   data(i).AUC = auc; 
 
   % AT
-  dCa = diff(Ca);
-  i_dCa = find(dCa>0); %cut-off specificeren
-  at = i_dCa(1);
+  dCa = diff(Cu);
+  i_dCa = find(dCu>0); %cut-off specificeren
+  at = i_dCu(1);
   data(i).AT = at;
 
   % MTT
-  cbv = trapz(t_Ca,y_Ca);
+  cbv = trapz(t_Cu,y_Cu);
   cbf = max(R);
   mtt = cbv/cbf;
   data(i).MTT = mtt;
 
   % PD en TTP
-  pd = max(y_cbv);
-  i_pd = find(y_cbv==pd);
-  ttp = t_cbv(i_pd);
+  pd = max(y_Cu);
+  i_pd = find(y_Cu==pd);
+  ttp = t_Cu(i_pd);
   data(i).PD = pd;
   data(i).TTP = ttp;
 end
