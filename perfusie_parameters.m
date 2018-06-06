@@ -9,8 +9,19 @@ data = table2struct(readtable(<%PATIENTDATA>.txt));
 for i=1:1:length(data.Patientnummer)
   % Import TDC
   addpath(data(i).PadTDC);
-  tdc = importdata(data(i).TDC);
+  Cu = importdata(data(i).Cu);
+  t_Cu = Cu(:,1);
+  y_Cu = Cu(:,2);
+  Ca = importdata(data(i).Ca);
+  t_Ca = Ca(:,1);
+  y_Ca = Ca(:,2);
   
+  %% Berekenen Cu, Ca en R
+  FCu = fft(y_Cu);
+  FCa = fft(y_Ca);
+  ht = ifft(FCu/FCa);
+  R = 1 - trapz(ht,0,t_tdc);
+
   % Normalisatie TDC
 
   % AUC
