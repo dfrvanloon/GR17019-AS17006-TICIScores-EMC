@@ -25,19 +25,24 @@ for i=1:1:length(data.Patientnummer)
   % Normalisatie TDC
 
   % AUC
-  auc = f_auc(tdc);
   data(i).AUC = auc; 
 
   % AT
-  at = f_at(tdc);
+  dCa = diff(Ca);
+  i_dCa = find(dCa>0); %cut-off specificeren
+  at = i_dCa(1);
   data(i).AT = at;
 
   % MTT
-  mtt = f_mtt(tdc);
+  cbv = trapz(t_Ca,y_Ca);
+  cbf = max(R);
+  mtt = cbv/cbf;
   data(i).MTT = mtt;
 
   % PD en TTP
-  [pd, ttp] = f_pd_ttp(tdc);
+  pd = max(y_cbv);
+  i_pd = find(y_cbv==pd);
+  ttp = t_cbv(i_pd);
   data(i).PD = pd;
   data(i).TTP = ttp;
 end
