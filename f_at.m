@@ -1,5 +1,5 @@
-function [auc] = f_at(tdc)
-  d_tdc = diff(tdc);
-  i_d_tdc = find(d_tdc>0); %cut-off specificeren
-  at = i_d_tdc(1);
+function [auc] = f_at(Ca)
+  dCa = diff(Ca);
+  i_dCa = find(dCa>0); %cut-off specificeren
+  at = i_dCa(1);
 end
