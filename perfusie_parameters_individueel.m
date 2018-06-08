@@ -59,24 +59,24 @@ R = 1 - integrate(ht,t,0);
 
 %% AUC
 auc = 1;
-data.AUC = auc; 
+data(pt).AUC = auc; 
 
 %% AT
 d_tissue = diff(y_tissue)/t(1:length(t)-1)';
 i_dtissue = find(d_tissue>0); %cut-off specificeren
 at = i_dtissue(1);
-data.AT = at;
+data(pt).AT = at;
 
 %% MTT
 cbv = trapz(t,y_tissue);
 cbf = max(R);
 mtt = cbv/cbf;
-data.MTT = mtt;
+data(pt).MTT = mtt;
 
 %% PD
 pd = max(y_tissue);
 i_pd = find(y_tissue==pd);
-data.PD = pd;
+data(pt).PD = pd;
  
 %% TTP
 ttp = t(i_pd);
