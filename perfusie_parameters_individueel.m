@@ -27,7 +27,8 @@ y_aif = bf(y_aif_fit,[0 length(t)],'pchip');
 y_aif(y_aif<0) = 0;
   
 %% Plotten grafieken
-figure; hold on;
+figure; 
+TDC_plot = subplot(1,2,1); hold on;
 plot(t_tdc,raw_tissue,'r','LineWidth',1)
 plot(t,y_tissue_fit,'b','LineWidth',1)
 plot(t,y_tissue,'g','LineWidth',1)
@@ -35,13 +36,15 @@ title('TDC en bewerkte TDC van het weefsel')
 legend('Ruwe TDC data','Functie gefit op data','Functie genormaliseerd naar baseline')
 xlabel('Tijd [s]'); ylabel('Dichtheid []')
 
-figure; hold on;
+AIF_plot = subplot(1,2,2); hold on;
 plot(t_tdc,raw_aif,'r','LineWidth',1)
 plot(t,y_aif_fit,'b','LineWidth',1)
 plot(t,y_aif,'g','LineWidth',1)
 title('TDC en bewerkte TDC van de arteriële input')
 legend('Ruwe TDC data','Functie gefit op data','Functie genormaliseerd naar baseline')
 xlabel('Tijd [s]'); ylabel('Dichtheid []')
+
+linkaxes([TDC_plot,AIF_plot],'y')
 
 %% Berekenen Cu, Ca en R
 Ftissue = fft(y_tissue);
