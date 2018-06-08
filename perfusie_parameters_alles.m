@@ -5,10 +5,10 @@
 clear all; close all; clc;
 
 %% Import data
-data = table2struct(readtable('Data.xlsx'));                    % Inleze van de datafile
+data = table2struct(readtable('Data.xlsx'));                    % Inlezen van de datafile met alle patiëntdata
 
 %% Bepalen parameters
-[N,~] = size(data);                                             % Bepalen van de hoeveelheid patiënten
+[N,~] = size(data);                                             % Bepalen van de hoeveelheid patiënten in de datafile
 for i=1:1:N
   
   %% Import en bewerking TIC  
@@ -35,9 +35,10 @@ for i=1:1:N
 
   %% Berekenen Cu, Ca en R
   Ftissue = fft(y_tissue);                                      % Fourier transformatie van de gefitte, genormaliseerde grafiek
-  Faif = fft(y_aif);                                
-  ht = ifft(Ftissue./Faif);                                     % Deconvolutie om de transferfunctie van Y_tissue(t) = AIF(t) (conv) H(t) te bepalen. Incl. inverse Fourier
-  R = 1 - trapz(t,ht);                                          % Bepaling van de residufunctie R(t)
+  Faif = fft(y_aif);                                            % Hetzelfde voor de AIF
+  ht = fit(t,ifft(Ftissue./Faif),'cubicinterp');                % Deconvolutie om de transferfunctie van Y_tissue(t) = AIF(t) (conv) H(t) te bepalen.
+                                                                % Incl. inverse Fourier en kubische interpolatie om een functie te maken.
+  R = 1 - integrate(ht,t,0);                                    % Bepaling van de residufunctie R(t) door integratie van 0 naar alle waarden van t
 
   %% AUC
   auc = 1;
