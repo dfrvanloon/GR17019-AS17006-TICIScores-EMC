@@ -4,10 +4,15 @@
 
 clear all; close all; clc;
 
+addpath('E:')
+data = table2struct(readtable('data_geincludeerd.xlsx'));
+
 %% Import en bewerking TDC
 % Import
-addpath('C:\Users\Bart\Dropbox\Bart\KT jaar 3\KT3800 KTO\KTO-B\Algoritme perfusie parameters\Oefendata')
-tdc = importdata('test_TICs_R0219_8_PROTOCOL.tics');
+pt = ;                       % Rijnummer uit de file behorende bij een patiënt
+addpath('E:\TICs')                 
+filename = dir([data(pt).Bestandsnaam,'*']); 
+tdc = importdata(filename.name);              
 t_tdc = tdc(:,1);
 raw_tissue = tdc(:,2);
 raw_aif = tdc(:,3);
