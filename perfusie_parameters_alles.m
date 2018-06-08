@@ -5,7 +5,8 @@
 clear all; close all; clc;
 
 %% Import data
-data = table2struct(readtable('Data.xlsx'));                    % Inlezen van de datafile met alle patiëntdata
+addpath('D:')                                                   % Locatie van de data toevoegen aan het pad
+data = table2struct(readtable('data.xlsx'));                    % Inlezen van de datafile met alle patiëntdata
 
 %% Bepalen parameters
 [N,~] = size(data);                                             % Bepalen van de hoeveelheid patiënten in de datafile
@@ -13,8 +14,9 @@ for i=1:1:N
   
   %% Import en bewerking TIC  
   % Import
-  addpath(data(i).PadTDC);                                      % Locatie van de tics file toevoegen aan het pad
-  tdc = importdata('test_TICs_R0497_12.tics');                  % Importeren van de tics file van de patiënt, de naam hiervan staat in de datafile
+  addpath(D:\TICs);                                             % Locatie van de .tics files toevoegen aan het pad
+  filename = dir([data(i).Bestandsnaam,'*']);                   % Naam van de .tics file achterhalen, deze begint met de naam van het .dcm bestand
+  tdc = importdata(filename.name);                              % Importeren van de tics file van de patiënt
   t_tdc = tdc(:,1);                                             % Tijdswaarden van de TIC
   raw_tissue = tdc(:,2);                                        % waarden van het weefsel 
   raw_aif = tdc(:,3);                                           % waarden van de arteriële input functie (AIF)
