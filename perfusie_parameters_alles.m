@@ -14,7 +14,7 @@ for i=1:1:N
   
   %% Import en bewerking TIC  
   % Import
-  addpath(D:\TICs);                                             % Locatie van de .tics files toevoegen aan het pad
+  addpath('D:\TICs');                                           % Locatie van de .tics files toevoegen aan het pad
   filename = dir([data(i).Bestandsnaam,'*']);                   % Naam van de .tics file achterhalen, deze begint met de naam van het .dcm bestand
   tdc = importdata(filename.name);                              % Importeren van de tics file van de patiënt
   t_tdc = tdc(:,1);                                             % Tijdswaarden van de TIC
