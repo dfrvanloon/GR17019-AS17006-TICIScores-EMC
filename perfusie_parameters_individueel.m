@@ -46,8 +46,8 @@ xlabel('Tijd [s]'); ylabel('Dichtheid []')
 %% Berekenen Cu, Ca en R
 Ftissue = fft(y_tissue);
 Faif = fft(y_aif);
-ht = ifft(Ftissue./Faif);
-R = 1 - trapz(t,ht);
+ht = fit(t,ifft(Ftissue./Faif),'cubicinterp');
+R = 1 - integrate(ht,t,0);
 
 %% AUC
 auc = 1;
