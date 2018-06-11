@@ -18,18 +18,13 @@ raw_tissue = tdc(:,2);
 raw_aif = tdc(:,3);
 
 % Fitting
-f_tissue_fit = fit(t_tdc,raw_tissue,'smoothingspline');
-f_aif_fit = fit(t_tdc,raw_aif,'smoothingspline');
-
 t = 0:0.1:max(t_tdc);
-y_tissue_fit = feval(f_tissue_fit,t);
-y_aif_fit = feval(f_aif_fit,t);
+f_tissue_fit = pchip(t_tdc,raw_tissue,t);
+f_aif_fit = pchip(t_tdc,raw_aif,t);
 
 % Normalisatie naar baseline
-y_tissue = bf(y_tissue_fit,[0 length(t)],'pchip');
-y_tissue(y_tissue<0) = 0;
-y_aif = bf(y_aif_fit,[0 length(t)],'pchip');
-y_aif(y_aif<0) = 0;
+y_tissue = y_tissue_fit - y_tissue_fit(1);
+y_aif = y_aif_fit - y_aif_fit(1);
   
 %% Plotten grafieken
 figure; 
