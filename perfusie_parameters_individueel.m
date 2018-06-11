@@ -56,9 +56,10 @@ Ftissue = fft(y_tissue);
 Faif = fft(y_aif);
 ht = fit(t,ifft(Ftissue./Faif),'cubicinterp');
 R = 1 - integrate(ht,t,0);
+ht = feval(ht,
 
 %% AUC
-auc = 1;
+auc = trapz(ht);
 data(pt).AUC = auc; 
 
 %% AT
