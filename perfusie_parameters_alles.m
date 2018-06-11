@@ -22,18 +22,13 @@ for i=1:1:N
   raw_aif = tdc(:,3);                                           % waarden van de arteriële input functie (AIF)
 
   % Fitting
-  f_tissue_fit = fit(t_tdc,raw_tissue,'smoothingspline');       % Fit op TIC met Smoothing Spline fitting, uitkomst is een functie
-  f_aif_fit = fit(t_tdc,raw_aif,'smoothingspline');             % Hetzelfde voor de AIF
-  
   t = 0:0.1:max(t_tdc);                                         % Zelf bepaalde, vaste tijdsvector
-  y_tissue_fit = feval(f_tissue_fit,t);                         % Tijdsvector wordt gebruikt om de Y-waarden van de gefitte functie te verkrijgen
-  y_aif_fit = feval(f_aif_fit,t);                               % Hetzelfde voor de AIF
+  f_tissue_fit = pchip(t_tdc,raw_tissue,t);                     % Fit op TIC met Smoothing Spline fitting, uitkomst is een functie
+  f_aif_fit = pchip(t_tdc,raw_aif,t);                           % Hetzelfde voor de AIF
 
   % Normalisatie naar baseline
-  y_tissue = bf(y_tissue_fit,[0 length(t)],'pchip');            % Grafieken worden naar baseline gebracht m.b.v. een script die beschikbaar was via de File Exchange
-  y_tissue(y_tissue<0) = 0;                                     % van MATLAB. Op basis van de eerste en de laatste waarde van de grafiek wordt er een functie bepaald
-  y_aif = bf(y_aif_fit,[0 length(t)],'pchip');                  % Die deze punten en daarmee de hele grafiek weer naar 0 brengt.
-  y_aif(y_aif<0) = 0;                                           % Negatieve waarden a.g.v. de normalisatie worden op 0 gezet.
+  y_tissue = y_tissue_fit - y_tissue_fit(1);                    % Normalisatie van de weefselcurve door het eerste datapunt op 0 te zetten
+  y_aif = y_aif_fit - y_aif_fit(1);                             % Hetzelfde voor de AIF
 
   %% Berekenen Cu, Ca en R
   Ftissue = fft(y_tissue);                                      % Fourier transformatie van de gefitte, genormaliseerde grafiek
